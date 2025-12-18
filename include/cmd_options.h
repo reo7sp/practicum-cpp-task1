@@ -1,8 +1,10 @@
 #pragma once
 
-#include <boost/program_options.hpp>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
+
+#include <boost/program_options.hpp>
 
 namespace CryptoGuard {
 
@@ -17,7 +19,7 @@ public:
         CHECKSUM,
     };
 
-    void Parse(int argc, char *argv[]);
+    void Parse(int argc, char* argv[]);
 
     COMMAND_TYPE GetCommand() const { return command_; }
     std::string GetInputFile() const { return inputFile_; }
@@ -37,6 +39,10 @@ private:
     std::string password_;
 
     boost::program_options::options_description desc_;
+};
+
+struct ProgramOptionHelpRequested : std::runtime_error {
+    explicit ProgramOptionHelpRequested() : std::runtime_error("help option requested") {}
 };
 
 }  // namespace CryptoGuard
